@@ -9,8 +9,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"path/filepath"
-	"reflect"
 	"strconv"
 	"strings"
 	"text/template"
@@ -25,13 +23,8 @@ func Handle(pattern string, handler func(w Response, r Request)) {
 	http.HandleFunc(pattern, handler)
 }
 
-func ServeFile(w Response, r Request, prefix string) bool {
-	Path := prefix + r.URL.Path
-	if filepath.Ext(Path) == "" {
-		return false
-	}
-	http.ServeFile(w, r, Path)
-	return true
+func ServeFile(w Response, r Request, filePath string) {
+	http.ServeFile(w, r, filePath)
 }
 
 func HandleSample() {
@@ -42,7 +35,7 @@ func HandleSample() {
 			"length": func(s string) int {
 				return len(s)
 			},
-		}, "server.go")
+		}, nil,"server.go")
 	})
 }
 
@@ -76,19 +69,10 @@ func Listen() {
 	}
 }
 
-func WriteTemplate(w io.Writer, value Dict, filename ...string, ) {
-	functions := template.FuncMap{}
-	for k, v := range value {
-		if reflect.ValueOf(v).Kind() == reflect.Func {
-			functions[k] = v
-			delete(value, k)
-		}
-	}
-	t, e := template.New(filename[0]).Funcs(functions).ParseFiles(filename...)
-	if e == nil {
+func WriteTemplate(w io.Writer, value interface{}, funcMap map[string]interface{}, filename ...string, ) {
+	if t, e := template.New(filename[0]).Funcs(funcMap).ParseFiles(filename...); e == nil {
 		e = t.Execute(w, value)
-	}
-	if e != nil {
+	}else{
 		log.Println(e)
 	}
 }
@@ -106,12 +90,12 @@ func GetMultipartFileHeaders(r Request) map[string][]*multipart.FileHeader {
 	return nil
 }
 
-func CookieSet(w Response, k, v string, days int) {
+func CookieSet(w Response, k,v string, age int) {
 	http.SetCookie(w, &http.Cookie{
 		Path:   "/",
 		Name:   k,
 		Value:  v,
-		MaxAge: 86400 * days,
+		MaxAge: age,
 	})
 }
 

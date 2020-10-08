@@ -6,9 +6,11 @@ import (
 	"fmt"
 	texttospeechpb "google.golang.org/genproto/googleapis/cloud/texttospeech/v1"
 	"log"
+	"strings"
 	"time"
 )
-func Speech(text string) []byte{
+
+func FetchSpeech(text string) []byte {
 	// Instantiates a client.
 	ctx := context.Background()
 
@@ -43,38 +45,45 @@ func Speech(text string) []byte{
 
 	return resp.AudioContent
 }
-func Now(timezone string) time.Time{
-	now:=time.Now()
-	if timezone==""{
-		timezone="Asia/Tokyo"
+func GetLocalTimes(timezone string) (time.Time, int) {
+	if timezone == "" {
+		timezone = "Asia/Tokyo"
 	}
-	if l,e:=time.LoadLocation(timezone);e==nil{
-		now=now.In(l)
+	l, _ := time.LoadLocation(timezone)
+	base := time.Date(2020, time.October, 1, 0, 0, 0, 0, l)
+	now := time.Now().In(l)
+	return now, int(now.Sub(base).Nanoseconds() / (86400 * 1000 * 1000 * 1000))
+}
+func GetScript(timezone string) string {
+	now, day := GetLocalTimes(timezone)
+	txt := []string{
+		fmt.Sprintf("%d時%d分%d%%。", now.Hour(), now.Minute(), 100-100*(now.Hour()*60+now.Minute())/1440),
+		"手帳を持ち，ベッドを畳み，スマホは投函しましょう。",
 	}
-	return now
+	if now.Hour() == 20 {
+		txt = append(txt, "寝る前は「連絡、充電、手帳」です。")
+	}
+	if now.Hour() == 4 || true {
+		txt = append(txt,
+			fmt.Sprintf("%d日の計画を手帳に書きましょう。", now.Day()),
+			fmt.Sprintf("身支度は「歯磨き、髭剃り，錠剤%d個目、石鹸%d個目、洗濯」。", (day+1)%10+1, (day+5)%10+1),
+			"持ち物は「財布、鍵、携帯、筆箱、手帳、眼鏡」です。",
+		)
+	}
+	if 21 <= now.Hour() || now.Hour() <= 3 {
+		txt = append(txt, "寝ましょう。")
+	}
+	return strings.Join(txt, "")
 }
 func main() {
 	Handle("/speech", func(w Response, r Request) {
-		now:=Now(r.FormValue("tz"))
-		report :=fmt.Sprintf("%d時%d分、今日は残り%d%%です。",now.Hour(),now.Minute(),100-100*(now.Hour()*60+now.Minute())/1440)
-		advice :="手帳を持っていますか？ベッドを畳んでいますか？スマートフォンを遠ざけていますか？"
-		if 20==now.Hour(){
-			advice ="明日に備えてやるべきことは「連絡、充電、着替え、風呂と洗濯、掃除、日記」です。"
-		}else if now.Hour()==3{
-			advice =fmt.Sprintf("ベッドを畳み、日記を読み、%d日の計画を立てましょう。",now.Day())
-			advice +="身支度の手順は「歯磨き、洗顔、薬を飲む、肌、毛を剃る」です。"
-			advice +="持ち物は「財布、鍵、携帯、筆箱、手帳、眼鏡」です。"
-		}else if 21<=now.Hour() || now.Hour()<3{
-			advice ="寝ましょう。睡眠に最適な時間帯は午後10時から午前2時です。"
-		}
-		w.Write(Speech(report + advice))
+		w.Write(FetchSpeech(GetScript(r.FormValue("tz"))))
 	})
-	Handle("/text", func(w Response, r Request) {
-		w.Write(Speech(r.FormValue("q")))
+	Handle("/speak", func(w Response, r Request) {
+		w.Write(FetchSpeech(r.FormValue("q")))
 	})
 	Handle("/", func(w Response, r Request) {
-		now:=Now(r.FormValue("tz"))
-		w.Write(Speech(fmt.Sprintf("%d月%d日は残り%d%%です。",now.Month(),now.Day(),100-100*(now.Hour()*60+now.Minute())/1440)))
+		w.Write([]byte(GetScript(r.FormValue("tz"))))
 	})
 	Credentialize("cloudmama.user.json")
 	Listen()
