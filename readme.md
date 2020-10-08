@@ -8,9 +8,17 @@
 
 https://cloudmama.appspot.com/
 
+文字列全パターン
+
+https://cloudmama.appspot.com/?all=true
+
 音声
 
 https://cloudmama.appspot.com/speech
+
+音声全パターン
+
+https://cloudmama.appspot.com/speech?all=true
 
 ## ESP32 Client
 

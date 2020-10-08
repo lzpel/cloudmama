@@ -54,36 +54,36 @@ func GetLocalTimes(timezone string) (time.Time, int) {
 	now := time.Now().In(l)
 	return now, int(now.Sub(base).Nanoseconds() / (86400 * 1000 * 1000 * 1000))
 }
-func GetScript(timezone string) string {
+func GetScript(isAll bool,timezone string) string {
 	now, day := GetLocalTimes(timezone)
 	txt := []string{
 		fmt.Sprintf("%d時%d分%d%%。", now.Hour(), now.Minute(), 100-100*(now.Hour()*60+now.Minute())/1440),
 		"手帳を持ち，ベッドを畳み，スマホは投函しましょう。",
 	}
-	if now.Hour() == 20 {
+	if isAll || now.Hour() == 20 {
 		txt = append(txt, "寝る前は「連絡、充電、手帳」です。")
 	}
-	if now.Hour() == 4 || true {
+	if isAll || now.Hour() == 4{
 		txt = append(txt,
 			fmt.Sprintf("%d日の計画を手帳に書きましょう。", now.Day()),
 			fmt.Sprintf("身支度は「歯磨き、髭剃り，錠剤%d個目、石鹸%d個目、洗濯」。", (day+1)%10+1, (day+5)%10+1),
 			"持ち物は「財布、鍵、携帯、筆箱、手帳、眼鏡」です。",
 		)
 	}
-	if 21 <= now.Hour() || now.Hour() <= 3 {
+	if isAll || 21 <= now.Hour() || now.Hour() <= 3 {
 		txt = append(txt, "寝ましょう。")
 	}
 	return strings.Join(txt, "")
 }
 func main() {
 	Handle("/speech", func(w Response, r Request) {
-		w.Write(FetchSpeech(GetScript(r.FormValue("tz"))))
+		w.Write(FetchSpeech(GetScript(r.FormValue("all")!="", r.FormValue("tz"))))
 	})
 	Handle("/speak", func(w Response, r Request) {
 		w.Write(FetchSpeech(r.FormValue("q")))
 	})
 	Handle("/", func(w Response, r Request) {
-		w.Write([]byte(GetScript(r.FormValue("tz"))))
+		w.Write([]byte(GetScript(r.FormValue("all")!="",r.FormValue("tz"))))
 	})
 	Credentialize("cloudmama.user.json")
 	Listen()
