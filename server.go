@@ -35,7 +35,7 @@ func HandleSample() {
 			"length": func(s string) int {
 				return len(s)
 			},
-		}, nil,"server.go")
+		}, nil, "server.go")
 	})
 }
 
@@ -72,7 +72,7 @@ func Listen() {
 func WriteTemplate(w io.Writer, value interface{}, funcMap map[string]interface{}, filename ...string, ) {
 	if t, e := template.New(filename[0]).Funcs(funcMap).ParseFiles(filename...); e == nil {
 		e = t.Execute(w, value)
-	}else{
+	} else {
 		log.Println(e)
 	}
 }
@@ -90,7 +90,7 @@ func GetMultipartFileHeaders(r Request) map[string][]*multipart.FileHeader {
 	return nil
 }
 
-func CookieSet(w Response, k,v string, age int) {
+func CookieSet(w Response, k, v string, age int) {
 	http.SetCookie(w, &http.Cookie{
 		Path:   "/",
 		Name:   k,
