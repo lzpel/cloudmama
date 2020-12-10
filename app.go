@@ -7,6 +7,7 @@ import (
 	_ "image/jpeg"
 	"io"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -39,13 +40,14 @@ func main() {
 		w.Write(FetchSpeech(r.FormValue("q")))
 	})
 	Handle("/script", func(w Response, r Request) {
+		var script string
 		if buf,err:=ioutil.ReadAll(r.Body);err!=nil{
 			panic(err)
 		}else{
 			// curl --data-binary @path2file.jpg http://localhost:8080/script
 			br := bytes.NewReader(buf)
 			if _,_,err:=image.Decode(br);err!=nil{
-				fmt.Fprintln(w,Script(r.FormValue("all")!="", r.FormValue("tz")))
+				script=Script(r.FormValue("all")!="", r.FormValue("tz"))
 			}else{
 				br.Seek(0,0)
 				ow:=NewObjectWriter("cloudmama-camera",fmt.Sprintf("trunk/%d-%s.jpg",time.Now().Unix(),"default"))
@@ -54,10 +56,14 @@ func main() {
 				if err := ow.Close(); err != nil {
 					panic(err)
 				}else{
-					fmt.Fprintln(w,"画像を保存しました")
+					script="画像を保存しました"
 				}
 			}
 		}
+		if r.FormValue("e")!=""{
+			script=url.QueryEscape(script)
+		}
+		fmt.Fprintln(w,script)
 	})
 	Credentialize("cloudmama.user.json")//GCSに設置した
 	Listen()

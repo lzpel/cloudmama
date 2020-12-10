@@ -18,7 +18,9 @@ WebServer webserver;
 //https://github.com/horihiro/esp8266-google-home-notifier
 #include <esp8266-google-home-notifier.h>
 
-bool handleAutoConnect(const char* wifi, const char* pass){
+#include "camera.h"
+
+bool AutoConnect(const char* wifi, const char* pass){
 	// 10秒毎に接続していなければ再接続を試みる。秒数の根拠は以下。
 	// https://github.com/espressif/arduino-esp32/blob/91b9fae111b8e601d8bdbcddf2dd430e0170706a/libraries/WiFi/src/WiFiSTA.cpp#L391
 	static unsigned long time=0;
@@ -29,24 +31,25 @@ bool handleAutoConnect(const char* wifi, const char* pass){
 	return status==WL_CONNECTED;
 }
 
-String HTTPGet(const char* httpurl="http://example.com/index.html"){
+String Request(const char* httpurl="http://example.com/index.html",const char*postbuf=0,const int postlen=0){
 	String payload;
+	int code;
 	HTTPClient http;
-	Serial.print("[HTTP] begin...\n");
-	// ライブラリの方針でbegin系関数は設定だけ行いブロックしないのかも
-	// configure traged server and url
+	http.begin(httpurl); // start http connection and send HTTP header
 	// http.begin("https://www.howsmyssl.com/a/check", ca); //HTTPS
-	http.begin(httpurl); //HTTP
-	// start connection and send HTTP header
-	int httpCode = http.GET();
-	Serial.printf("[HTTP] GET... code: %d\n", httpCode);
+	// ライブラリの方針でbegin系関数は設定だけ行いブロックしないのかも
+	if(postbuf){
+		code = http.POST((uint8_t*)postbuf,postlen);
+	}else{
+		code = http.GET();
+	}
 	// httpCode will be negative on error
-	if(httpCode > 0) {
+	if(code > 0) {
 		// HTTP header has been send and Server response header has been handled
 		// file found at server
-		if(httpCode == HTTP_CODE_OK) {
+		if(code == HTTP_CODE_OK) {
 			payload = http.getString();
-			Serial.println(payload);
+			Serial.printf("HTTP %d\n%s",code,payload.c_str());
 		}
 	}
 	http.end();
@@ -74,25 +77,26 @@ void setup() {
 	Serial.setDebugOutput(true);
 	//シリアルモニタに出力
 	Serial.println("HelloWorld");
-	//Wifiの親機（アクセスポイント）かつ子機（ステーション）として振る舞うモードに設定
-	//この処理が無くても動作するが明示的に書いた。
+	//Wifiの親機（アクセスポイント）かつ子機（ステーション）として振る舞うモードに設定。この処理が無くても動作するが明示的に書いた。
 	WiFi.mode(WIFI_AP_STA);
 	//アクセスポイントのパスワードは8文字以上に設定しないと失敗する
 	WiFi.softAP("camerawifi", "camerapass");
 	//ipアドレスにmdnsを設定。Wifi.modeに関わらない。
 	if (MDNS.begin("cloudmama"))Serial.println("http://cloudmama.local/");
+	//カメラ設定
+	CameraInit();
 	//ウェブサーバーを始める。Wifi.modeに関わらない。
 	webserver.begin(80);
 	//無名関数でレスポンスを作る
 	webserver.on("/", []() {
 		webserver.send(200, "text/html",
-		               "<html>"
-		               "<head></head>"
-		               "<body>"
-		               "<h1>Hello World</h1>"
-		               "</body>"
-		               "</html>"
-		);
+			"<html>"
+			"<head></head>"
+			"<body>"
+			"<h1>Hello World</h1>"
+			"</body>"
+			"</html>"
+			);
 	});
 	webserver.on("/redirect", []() {
 		webserver.sendHeader("Location", "/");
@@ -102,15 +106,22 @@ void setup() {
 	webserver.on("/httpget", [](){
 		//HTTPで取得した内容を直接表示
 		//最後に/をつけないと404になった。
-		webserver.send(200,"text/html",HTTPGet("http://lzpel.net/"));
+		webserver.send(200,"text/html",Request("http://lzpel.net/"));
 	});
 }
 void loop() {
 	static unsigned long time=0;
 	unsigned long now=millis();
-	if(handleAutoConnect("SPWN_H37_4E72EE","eq80a0j60r6ngj2")){
+	if(AutoConnect("SPWN_H37_4E72EE","eq80a0j60r6ngj2")){
 		if((time==0||(now-time)>1000*60*10)&&(time=now)){
-			Speech("303","https://cloudmama.appspot.com/speech");
+			String url("http://cloudmama.appspot.com/speech?q=3104");
+			char*buf;
+			int len;
+			CameraCapture(&buf,&len);
+			String ret=Request("http://cloudmama.appspot.com/script?e=1",buf,len);
+			url.concat(ret);
+			//urlencodeと認識する否かが不安定。英語は問題なかった
+			Speech("303",url.c_str());
 		}
 	}
 	webserver.handleClient();
