@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func FetchSpeech(text string) []byte {
+func Speech(text string) []byte {
 	// Instantiates a client.
 	ctx := context.Background()
 
