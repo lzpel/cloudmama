@@ -15,9 +15,9 @@ func Script(image string) string {
 	now:=time.Now().In(time.Local)
 	day := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC).Unix() / 86400
 	txt := []string{
-		fmt.Sprintf("時刻は%d時%d分、残りは%d%%。", now.Hour(), now.Minute(), 100-100*(now.Hour()*60+now.Minute())/1440),
-		"手帳を持ち，ベッドを畳み，スマホは捨てましょう",
 		image,
+		fmt.Sprintf("時刻は%d時%d分、残りは%d%%。", now.Hour(), now.Minute(), 100-100*(now.Hour()*60+now.Minute())/1440),
+		"手帳を持ち，ベッドを畳み，スマホは捨てましょう。",
 	}
 	_=map[int]string{
 		04:fmt.Sprintf("起床は「失敗、手帳」、美容は「髭、眉、薬%d個目、湯%d個目」、準備は「財布、鍵、携帯、筆箱、手帳、眼鏡」",(day+1)%10+1, (day+5)%10+1),
@@ -72,6 +72,10 @@ func main() {
 				}
 			}
 		}
+	})
+	Handle("/", func(w Response, r Request) {
+		preHandle(w, r)
+		WriteTemplate(w,nil,nil,"home.html")
 	})
 	//GCSに設置した
 	Credentialize("cloudmama.user.json")

@@ -1,8 +1,8 @@
 runtime: go112
 
 handlers:
-# - url: /(.*\.(gif|png|jpg|js))
-#  static_files: \1
-#  upload: .*\.(gif|png|jpg|js)
+- url: /(.*\.(gif|png|jpg|mp3|ogg|js))
+  static_files: \1
+  upload: .*\.(gif|png|jpg|mp3|ogg|js)
 - url: /
   script: auto

@@ -21,6 +21,8 @@ WebServer webserver;
 #include "camera.h"
 #include "urlencode.h"
 
+const int interval_seconds=60;
+
 bool AutoConnect(const char* wifi, const char* pass) {
   // 10秒毎に接続していなければ再接続を試みる。秒数の根拠は以下。
   // https://github.com/espressif/arduino-esp32/blob/91b9fae111b8e601d8bdbcddf2dd430e0170706a/libraries/WiFi/src/WiFiSTA.cpp#L391
@@ -114,14 +116,14 @@ void loop() {
   static unsigned long time = 0;
   unsigned long now = millis();
   if (AutoConnect("SPWN_H37_4E72EE", "eq80a0j60r6ngj2")) {
-    if ((time == 0 || (now - time) > 1000 * 60 * 10) && (time = now)) {
-      char*buf;
-      int len;
-      CameraCapture(&buf, &len);
-      String ret = Request("http://cloudmama.appspot.com/image", buf, len);
-      String url("http://cloudmama.appspot.com/speech?i=");
-      url.concat(urlEncode(ret.c_str()));
-      Speech("303", url.c_str());
+    if ((time == 0 || (now - time) > 1000 * interval_seconds) && (time = now)) {
+      CameraOpen();
+      String ret = Request("http://cloudmama.appspot.com/image", CameraBuf(), CameraLen());
+      CameraClose();
+      //String url("http://cloudmama.appspot.com/speech?i=");
+      //url.concat(urlEncode(ret.c_str()));
+      //Speech("303", url.c_str());
+      Speech("303", "http://cloudmama.appspot.com/effect0.mp3");
     }
   }
   webserver.handleClient();

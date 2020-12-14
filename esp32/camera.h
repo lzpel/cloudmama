@@ -108,9 +108,10 @@
 #error "Camera model not selected"
 #endif
 
+camera_fb_t * camera_frame_buffer = NULL; // pointer
 
 void CameraInit(){
-
+  
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
@@ -176,17 +177,22 @@ void CameraInit(){
   s->set_hmirror(s, 1); //hflip
 }
 
-// Capture Photo to given pointer
-void CameraCapture( char**buf,int*len ) {
-  camera_fb_t * fb = NULL; // pointer
-  // Take a photo with the camera
+// Capture Photo
+void CameraOpen() {
   Serial.println("Taking a photo...");
-
-  fb = esp_camera_fb_get();
-  if (!fb) {
+  camera_frame_buffer = esp_camera_fb_get();
+  if (!camera_frame_buffer) {
     Serial.println("Camera capture failed");
     return;
   }
-  *buf=(char*)fb->buf;
-  *len=fb->len;
+}
+const char* CameraBuf(){
+  return (const char*)camera_frame_buffer->buf;
+}
+int CameraLen(){
+  return camera_frame_buffer->len;
+}
+void CameraClose(){
+  //return the frame buffer back to the driver for reuse
+  esp_camera_fb_return(camera_frame_buffer);
 }
