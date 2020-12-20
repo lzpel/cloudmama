@@ -1,4 +1,9 @@
 .idea
 .git
+
 *.exe
 *.user.json
+
+fp-info-cache
+*.kicad_pcb-bak
+*.sch-bak
