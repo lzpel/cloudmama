@@ -21,7 +21,7 @@ WebServer webserver;
 #include "camera.h"
 #include "urlencode.h"
 
-const int interval_seconds=60;
+const int interval_seconds=60*10;
 
 bool AutoConnect(const char* wifi, const char* pass) {
   // 10秒毎に接続していなければ再接続を試みる。秒数の根拠は以下。
@@ -117,13 +117,15 @@ void loop() {
   unsigned long now = millis();
   if (AutoConnect("SPWN_H37_4E72EE", "eq80a0j60r6ngj2")) {
     if ((time == 0 || (now - time) > 1000 * interval_seconds) && (time = now)) {
-      CameraOpen();
-      String ret = Request("http://cloudmama.appspot.com/image", CameraBuf(), CameraLen());
-      CameraClose();
-      //String url("http://cloudmama.appspot.com/speech?i=");
-      //url.concat(urlEncode(ret.c_str()));
-      //Speech("303", url.c_str());
-      Speech("303", "http://cloudmama.appspot.com/effect0.mp3");
+      String url("http://cloudmama.appspot.com/speech?i=");
+      if(false){
+        CameraOpen();
+        url.concat(urlEncode(Request("http://cloudmama.appspot.com/image", CameraBuf(), CameraLen()).c_str()));
+        CameraClose();
+      }
+      if(true){
+        Speech("303", "http://cloudmama.appspot.com/speech");
+      }
     }
   }
   webserver.handleClient();
