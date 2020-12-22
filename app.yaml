@@ -1,5 +1,6 @@
 runtime: go112
 
+
 handlers:
 - url: /(.*\.(gif|png|jpg|mp3|ogg|js))
   static_files: \1
