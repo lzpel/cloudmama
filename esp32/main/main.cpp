@@ -63,7 +63,7 @@ void Speech(const char* deviceName, const char* url) {
   GoogleHomeNotifier ghn;
   Serial.println("connecting to Google Home...");
   if (ghn.device(deviceName, "jp")) {
-    Serial.printf("found Google Home %s:%d\n", ghn.getIPAddress().toString(), ghn.getPort());
+    Serial.printf("found Google Home %s:%d\n", ghn.getIPAddress().toString().c_str(), ghn.getPort());
     if (ghn.play(url)) {
       Serial.printf("play %s\n", url);
       Serial.println(ghn.getLastError());
@@ -73,7 +73,7 @@ void Speech(const char* deviceName, const char* url) {
   Serial.println(ghn.getLastError());
 }
 
-void setup() {
+int app_main() {
   //シリアルモニタの同期周波数。PC側に以下の値を設定しないと文字化けする。
   Serial.begin(115200);
   //wifi等の状態を出力してくれるらしい。
@@ -111,6 +111,7 @@ void setup() {
     //最後に/をつけないと404になった。
     webserver.send(200, "text/html", Request("http://lzpel.net/"));
   });
+  return 0;
 }
 void loop() {
   static unsigned long time = 0;

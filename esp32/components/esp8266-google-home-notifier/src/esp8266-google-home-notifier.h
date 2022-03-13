@@ -17,7 +17,7 @@
 #error "ARDUINO_ARCH_ESP8266 or ARDUINO_ARCH_ESP32 has to be defined."
 #endif
 
-#include <google-tts.h>
+//#include <google-tts.h>
 
 #define LIB_NAME "GoogleHomeNotifier for ESP8266"
 #define LIB_VERSION "0.1"
@@ -43,7 +43,7 @@ private:
   char m_transportid[40] = {0};
   char m_clientid[40] = {0};
 
-  TTS tts;
+  //TTS tts;
   WiFiClientSecure* m_client = nullptr;
   boolean m_clientCreated = false;
   IPAddress m_ipaddress;

@@ -83,18 +83,18 @@ boolean GoogleHomeNotifier::cast(const char *phrase, const char *mp3Url, WiFiCli
     m_clientCreated = true;
   }
   if (phrase != nullptr) {
-    tts.setWiFiClientSecure(m_client);
-    speechUrl = tts.getSpeechUrl(phrase, m_locale);
-    delay(1);
-
-    if (speechUrl.indexOf("https://") != 0) {
-      this->setLastError("Failed to get TTS url.");
-      if (m_clientCreated == true) {
-        delete m_client;
-        m_client = nullptr;
-      }
-      return false;
-    }
+    //tts.setWiFiClientSecure(m_client);
+    //speechUrl = tts.getSpeechUrl(phrase, m_locale);
+    //delay(1);
+    //
+    //if (speechUrl.indexOf("https://") != 0) {
+    //  this->setLastError("Failed to get TTS url.");
+    //  if (m_clientCreated == true) {
+    //    delete m_client;
+    //    m_client = nullptr;
+    //  }
+    //  return false;
+    //}
   } else if (mp3Url != nullptr) {
     speechUrl = mp3Url;
   } else {

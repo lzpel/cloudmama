@@ -17,7 +17,7 @@ String urlEncode(const char* msg){
     String encoded = "";
 
     while(*msg != '\0'){
-        if(safeTable[*msg]){
+        if(safeTable[int(*msg)]){
             encoded += *msg;
         }
         else{
