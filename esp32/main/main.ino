@@ -73,7 +73,7 @@ void Speech(const char* deviceName, const char* url) {
   Serial.println(ghn.getLastError());
 }
 
-int app_main() {
+void setup() {
   //シリアルモニタの同期周波数。PC側に以下の値を設定しないと文字化けする。
   Serial.begin(115200);
   //wifi等の状態を出力してくれるらしい。
@@ -111,7 +111,6 @@ int app_main() {
     //最後に/をつけないと404になった。
     webserver.send(200, "text/html", Request("http://lzpel.net/"));
   });
-  return 0;
 }
 void loop() {
   static unsigned long time = 0;
