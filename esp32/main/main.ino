@@ -29,9 +29,41 @@ bool AutoConnect(const char* wifi, const char* pass) {
   static unsigned long time = 0;
   unsigned long now = millis(), status = WiFi.status();
   if ((time == 0 || (now - time) > 10000) && (time = now)) {
-    if (status != WL_CONNECTED)WiFi.begin(wifi, pass);
+    if (status != WL_CONNECTED){
+      Serial.printf("No connection, connecting %s:%s\n",wifi,pass);
+      WiFi.begin(wifi, pass);
+    }
   }
   return status == WL_CONNECTED;
+}
+
+void Scan(){
+    Serial.println("scan start");
+
+    // WiFi.scanNetworks will return the number of networks found
+    int n = WiFi.scanNetworks();
+    Serial.println("scan done");
+    if (n == 0) {
+        Serial.println("no networks found");
+    } else {
+        Serial.print(n);
+        Serial.println(" networks found");
+        for (int i = 0; i < n; ++i) {
+            // Print SSID and RSSI for each network found
+            Serial.print(i + 1);
+            Serial.print(": ");
+            Serial.print(WiFi.SSID(i));
+            Serial.print(" (");
+            Serial.print(WiFi.RSSI(i));
+            Serial.print(")");
+            Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
+            delay(10);
+        }
+    }
+    Serial.println("");
+
+    // Wait a bit before scanning again
+    delay(500);
 }
 
 String Request(const char* httpurl = "http://example.com/index.html", const char*postbuf = 0, const int postlen = 0) {
@@ -86,6 +118,8 @@ void setup() {
   WiFi.softAP("camerawifi", "camerapass");
   //ipアドレスにmdnsを設定。Wifi.modeに関わらない。
   if (MDNS.begin("cloudmama"))Serial.println("http://cloudmama.local/");
+  //WifiAP確認
+  Scan();
   //カメラ設定
   CameraInit();
   //ウェブサーバーを始める。Wifi.modeに関わらない。
@@ -115,7 +149,7 @@ void setup() {
 void loop() {
   static unsigned long time = 0;
   unsigned long now = millis();
-  if (AutoConnect("SPWN_H37_4E72EE", "eq80a0j60r6ngj2")) {
+  if (AutoConnect("SPWH_H33_5DCC29", "jmqfe8nqtafiny4")) {
     if ((time == 0 || (now - time) > 1000 * interval_seconds) && (time = now)) {
       String url("http://cloudmama.appspot.com/speech?i=");
       if(false){
