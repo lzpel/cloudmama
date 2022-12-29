@@ -27,7 +27,7 @@ https://cloudmama.appspot.com/speech?all=true
 ## ESP32 Dev
 
 https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/tools/idf-docker-image.html?highlight=docker
-```
+```shell
 docker pull espressif/idf
 
 env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project espressif/idf idf.py build
@@ -35,6 +35,21 @@ env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project espressif/id
 cp -r /opt/esp/idf/examples/get-started/hello_world/* ./
 env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project -it espressif/idf
 # 20221229 Docker コンテナからホストのUSBにアクセスできないってマジ？ビルドしてもマイコンに書き込めない。
+```
+
+https://learn.microsoft.com/ja-jp/windows/wsl/connect-usb
+
+```shell
+usbipd wsl list
+usbipd wsl attach --busid <busid>
+```
+
+```shell
+$ lsusb
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 002: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+$ env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project --device=/dev/bus/usb/001/002:/dev/esp -it espressif/idf
 ```
 
 ###
