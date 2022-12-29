@@ -49,7 +49,7 @@ $ lsusb
 Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
 Bus 001 Device 002: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-$ env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project --device=/dev/bus/usb/001/002:/dev/esp -it espressif/idf
+$ env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project --device=/dev/bus/usb/001/002:/dev/ttyUSB0 -it espressif/idf
 ```
 
 ###
