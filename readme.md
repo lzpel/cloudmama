@@ -60,5 +60,8 @@ $ env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project --device=/
 ###
 Commands which communicate with the development board, such as idf.py flash and idf.py monitor will not work in the container unless the serial port is passed through into the container. However currently this is not possible with Docker for Windows (https://github.com/docker/for-win/issues/1018) and Docker for Mac (https://github.com/docker/for-mac/issues/900).
 
+### esp-idf5.0のwindows版
+を入れて解決した
+
 ## License
 MIT Copyright 2020 lzpel
