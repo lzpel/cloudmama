@@ -24,5 +24,21 @@ https://cloudmama.appspot.com/speech?all=true
 
 [C++ Source Code](esp32/cloudmama.ino)
 
+## ESP32 Dev
+
+https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/tools/idf-docker-image.html?highlight=docker
+```
+docker pull espressif/idf
+
+env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project espressif/idf idf.py build
+# interactive mode
+cp -r /opt/esp/idf/examples/get-started/hello_world/* ./
+env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project -it espressif/idf
+# 20221229 Docker コンテナからホストのUSBにアクセスできないってマジ？ビルドしてもマイコンに書き込めない。
+```
+
+###
+Commands which communicate with the development board, such as idf.py flash and idf.py monitor will not work in the container unless the serial port is passed through into the container. However currently this is not possible with Docker for Windows (https://github.com/docker/for-win/issues/1018) and Docker for Mac (https://github.com/docker/for-mac/issues/900).
+
 ## License
 MIT Copyright 2020 lzpel
