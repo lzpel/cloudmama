@@ -35,7 +35,11 @@ env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project espressif/id
 cp -r /opt/esp/idf/examples/get-started/hello_world/* ./
 env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project -it espressif/idf
 # 20221229 Docker コンテナからホストのUSBにアクセスできないってマジ？ビルドしてもマイコンに書き込めない。
+# ttyUSB0という名前にすると-pを指定せずにflashしても推定してくれる
 ```
+
+container内でlsusb -vするとCouldn't open device, some information will be missingとなる
+のが関係していると思う。デバイスを開けない
 
 https://learn.microsoft.com/ja-jp/windows/wsl/connect-usb
 
