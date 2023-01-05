@@ -18,10 +18,6 @@
 #include <math.h>
 
 i2s_chan_handle_t tx_handle;
-/* Get the default channel configuration by helper macro.
- * This helper macro is defined in 'i2s_common.h' and shared by all the i2s communication mode.
- * It can help to specify the I2S role, and port id */
-i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
 
 /* Allocate a new tx channel and get the handle of this channel */
 #define sample_rate 48000
@@ -60,12 +56,15 @@ void app_main(void) {
                     },
             },
     };
+    i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
+    chan_cfg.dma_desc_num = 3;
+    chan_cfg.dma_frame_num = sample_per_cycle;//dma_buffer_size = dma_frame_num * slot_num * slot_bit_width / 8
+    printf("%d, %d, %d \n",
+           (int) chan_cfg.dma_frame_num, (int) chan_cfg.dma_desc_num, (int) std_cfg.slot_cfg.slot_bit_width);
     i2s_new_channel(&chan_cfg, &tx_handle, NULL);
     i2s_channel_init_std_mode(tx_handle, &std_cfg);
-    i2s_event_callbacks_t callbacks={
-
-    };
-    i2s_channel_register_event_callback(tx_handle, &callbacks, NULL);
+    //i2s_event_callbacks_t callbacks={};
+    //i2s_channel_register_event_callback(tx_handle, &callbacks, NULL);
     i2s_channel_enable(tx_handle);
 
 
