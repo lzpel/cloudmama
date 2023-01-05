@@ -57,11 +57,14 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 $ env MSYS_NO_PATHCONV=1 docker run --rm -v $PWD:/project -w /project --device=/dev/bus/usb/001/002:/dev/ttyUSB0 -it espressif/idf
 ```
 
-###
 Commands which communicate with the development board, such as idf.py flash and idf.py monitor will not work in the container unless the serial port is passed through into the container. However currently this is not possible with Docker for Windows (https://github.com/docker/for-win/issues/1018) and Docker for Mac (https://github.com/docker/for-mac/issues/900).
-
-### esp-idf5.0のwindows版
+esp-idf5.0のwindows版
 を入れて解決した
+
+## PCB 設計
+- screw terminal
+- KF350-3.5-2P
+- DB125-3.5-2P-GN-S
 
 ## License
 MIT Copyright 2020 lzpel
