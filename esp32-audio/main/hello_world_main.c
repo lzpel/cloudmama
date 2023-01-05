@@ -34,7 +34,7 @@ void setup_waves(void) {
     double sin_float;
     for (int i = 0; i < sample_per_cycle; i++) {
         sin_float = sin(2 * i * 3.14159 / (double) sample_per_cycle);
-        samples_data[i] = (uint16_t)((sin_float + 1) * max_volume);
+        samples_data[i] = (uint16_t)(sin_float * max_volume+32767);
         printf("%d\n", samples_data[i]);     //信号の確認
     }
 }
