@@ -24,19 +24,21 @@ i2s_chan_handle_t tx_handle;
 i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
 
 /* Allocate a new tx channel and get the handle of this channel */
-static const int sample_rate=44100;
-static const int wave_hz = 441; // 441hz
-static const int sample_per_cycle=sample_rate/wave_hz;
-static const int max_volume=15000;
+#define sample_rate 44100
+#define wave_hz 441
+#define sample_per_cycle (int)(sample_rate/wave_hz)
+#define max_volume 15000
 uint16_t samples_data[100];
-void setup_waves(void){
+
+void setup_waves(void) {
     double sin_float;
-    for(int i = 0; i < sample_per_cycle; i++) {
-        sin_float = sin(2 * i * 3.14159 / (double)sample_per_cycle);
+    for (int i = 0; i < sample_per_cycle; i++) {
+        sin_float = sin(2 * i * 3.14159 / (double) sample_per_cycle);
         samples_data[i] = (uint16_t)((sin_float + 1) * max_volume);
-        printf("%d\n",samples_data[i]);     //信号の確認
+        printf("%d\n", samples_data[i]);     //信号の確認
     }
 }
+
 void app_main(void) {
     setup_waves();
     //ここで設定した方が良いのではないか、↑はコード外だぞ
@@ -70,7 +72,7 @@ void app_main(void) {
     for (int i = 0; i < 1000; i++) {
         size_t tmp, ret;
         ret = i2s_channel_write(tx_handle, samples_data, sizeof(samples_data), &tmp, 100);
-        printf("%d %d %d %d\n", ret, tmp , ESP_OK, ESP_ERR_TIMEOUT);
+        printf("%d %d %d %d\n", ret, tmp, ESP_OK, ESP_ERR_TIMEOUT);
     }
     /* If the configurations of slot or clock need to be updated,
     * stop the channel first and then update it */
