@@ -25,10 +25,10 @@ i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_M
 
 /* Allocate a new tx channel and get the handle of this channel */
 #define sample_rate 44100
-#define wave_hz 441
+#define wave_hz 100
 #define sample_per_cycle (int)(sample_rate/wave_hz)
 #define max_volume 15000
-uint16_t samples_data[100];
+uint16_t samples_data[sample_per_cycle];
 
 void setup_waves(void) {
     double sin_float;
@@ -69,7 +69,7 @@ void app_main(void) {
 
     /* Before write data, start the tx channel first */
     i2s_channel_enable(tx_handle);
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < wave_hz*10; i++) {
         size_t tmp, ret;
         ret = i2s_channel_write(tx_handle, samples_data, sizeof(samples_data), &tmp, 100);
         printf("%d %d %d %d\n", ret, tmp, ESP_OK, ESP_ERR_TIMEOUT);
