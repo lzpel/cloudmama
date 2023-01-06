@@ -1,6 +1,7 @@
 .idea/
 .git/
 build/
+cmake-build-debug/
 
 *.exe
 *.user.json
