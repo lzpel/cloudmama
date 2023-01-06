@@ -23,13 +23,13 @@ i2s_chan_handle_t tx_handle;
 #define sample_rate 48000
 #define wave_hz 400
 #define sample_per_cycle (int)(sample_rate/wave_hz)
-uint16_t samples_data[sample_per_cycle];
+int16_t samples_data[sample_per_cycle];
 
 void setup_waves(void) {
     double sin_float;
     for (int i = 0; i < sample_per_cycle; i++) {
         sin_float = sin(2 * i * 3.14159 / (double) sample_per_cycle);
-        samples_data[i] = (uint16_t)((1 + sin_float * 0.3) * (double) (65536 / 2));
+        samples_data[i] = (0 + sin_float * 0.5) * (double) (65536 / 2);
         printf("%d\n", samples_data[i]);     //信号の確認
     }
 }
