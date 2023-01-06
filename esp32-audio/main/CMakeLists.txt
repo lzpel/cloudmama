@@ -1,2 +1,3 @@
-idf_component_register(SRCS "hello_world_main.c"
-                    INCLUDE_DIRS "")
+FILE(GLOB_RECURSE app_sources ./*.*)
+
+idf_component_register(SRCS ${app_sources})

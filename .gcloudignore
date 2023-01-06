@@ -1,3 +1,12 @@
-.idea
-.git
+.idea/
+.git/
+build/
+cmake-build-debug/
+
 *.exe
+*.swp
+*.user.json
+
+fp-info-cache
+*.kicad_pcb-bak
+*.sch-bak
