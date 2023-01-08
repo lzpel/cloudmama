@@ -9,10 +9,11 @@
 ![img](figures/pcb.png)
 ![img](figures/scheme.png)
 
-## 端末ソースコード
+## 端末ファームウェア
 
 [C++ Source Code](esp32/cloudmama.ino)
 
+## サーバーサービス
 
 音声出力
 
