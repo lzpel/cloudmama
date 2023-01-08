@@ -2,27 +2,25 @@
 
 日時に合わせて適切なアドバイスをGoogle Homeから再生する私的サービス
 
-## Output
+## 端末ハードウェア
 
-文字列
+![img](figures/camera%20v11.png)
+![img](figures/LZP32-SPEAKER%20v22.png)
+![img](figures/pcb.png)
+![img](figures/scheme.png)
 
-https://cloudmama.appspot.com/
+## 端末ソースコード
 
-文字列全パターン
+[C++ Source Code](esp32/cloudmama.ino)
 
-https://cloudmama.appspot.com/?all=true
 
-音声
+音声出力
 
 https://cloudmama.appspot.com/speech
 
-音声全パターン
+音声出力全パターン
 
 https://cloudmama.appspot.com/speech?all=true
-
-## ESP32 Client
-
-[C++ Source Code](esp32/cloudmama.ino)
 
 ## ESP32 Dev
 
