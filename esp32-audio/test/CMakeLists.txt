@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.13)
+project(test)
+FILE(GLOB_RECURSE MP3Decoder "../components/MP3Decoder/*.cpp")
+include_directories(../components/)
+add_library(MP3Decoder STATIC ${MP3Decoder})
+add_executable(test "main.cpp")
+target_link_libraries(test MP3Decoder)
