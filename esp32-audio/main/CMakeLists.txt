@@ -1,4 +1,5 @@
+FILE(GLOB_RECURSE app_sources ./*.cpp)
 idf_component_register(
-        SRCS "main.cpp" "AudioOutput.cpp" "MP3Decoder.cpp"
+        SRCS ${app_sources}
         INCLUDE_DIRS ""
 )
