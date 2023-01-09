@@ -2,6 +2,8 @@
 #include <stdio.h>
 
 int main() {
+    //この動画のような構成によるmp3decodeを目指している
+    // https://www.youtube.com/watch?v=kdKnddqCJbY
     MP3Decoder mp3;
     mp3.init();
 
