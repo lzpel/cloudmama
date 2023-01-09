@@ -9,6 +9,7 @@
 
 class AudioOutput {
     i2s_chan_handle_t tx_handle;
+public:
     void start(int sampling_rate);
     void play(void(*callback)(int16_t *p, signed size));
     void end();

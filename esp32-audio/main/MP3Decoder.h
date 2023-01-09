@@ -7,8 +7,8 @@
 
 
 
-class mp3decoder {
-
+class MP3Decoder {
+    void init();
 };
 
 

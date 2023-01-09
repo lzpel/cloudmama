@@ -2,7 +2,7 @@
 // Created by smith on 2023/01/09.
 //
 
-#include "mp3decoder.h"
+#include "MP3Decoder.h"
 
 #define MINIMP3_ONLY_MP3
 //#define MINIMP3_ONLY_SIMD
@@ -13,9 +13,6 @@
 #include "minimp3.h"
 
 static mp3dec_t mp3d;
-void MP3Decoder::init(){
-    mp3dec_init(&mp3d);
-}
 void MP3Decoder::init(){
     mp3dec_init(&mp3d);
 }
