@@ -17,8 +17,9 @@ class MP3Decoder {
     mp3dec_t mp3d;
     mp3dec_frame_info_t info;
 public:
+    short pcm[MINIMP3_MAX_SAMPLES_PER_FRAME];
     void init();
-    void decode(const uint8_t* input_buf,size_t input_buf_size);
+    signed decode(const uint8_t* input_buf,size_t input_buf_size);
 };
 
 
