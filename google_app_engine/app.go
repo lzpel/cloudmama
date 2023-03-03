@@ -13,20 +13,20 @@ import (
 )
 
 func Script(image string) string {
-	now:=time.Now().In(time.Local)
+	now := time.Now().In(time.Local)
 	day := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC).Unix() / 86400
 	txt := []string{
 		image,
 		fmt.Sprintf("時刻は%d時%d分、残りは%d%%。", now.Hour(), now.Minute(), 100-100*(now.Hour()*60+now.Minute())/1440),
 		"手帳を持ち，ベッドを畳み，スマホは捨てましょう。",
 	}
-	_=map[int]string{
-		04:fmt.Sprintf("起床は「失敗、手帳」、支度は「歯、髭、眉、薬%d個目、湯%d個目」、準備は「財布、鍵、携帯、筆箱、手帳、眼鏡」",(day+1)%10+1, (day+5)%10+1),
-		20:"連絡と手帳",
-		21:"睡眠",
+	_ = map[int]string{
+		04: fmt.Sprintf("起床は「失敗、手帳」、支度は「歯、髭、眉、薬%d個目、湯%d個目」、準備は「財布、鍵、携帯、筆箱、手帳、眼鏡」", (day+1)%10+1, (day+5)%10+1),
+		20: "連絡と手帳",
+		21: "睡眠",
 	}
 	if now.Hour() == 20 {
-		txt = append(txt, )
+		txt = append(txt)
 	}
 	if now.Hour() == 4 {
 		txt = append(txt,
@@ -40,13 +40,13 @@ func Script(image string) string {
 	}
 	return strings.Join(txt, "")
 }
-func SpeechSave(script string, path string){
-    file, err := os.Create(path)
-    if err != nil {
-      fmt.Println(err)
-    }
-    defer file.Close()
-    file.Write(Speech(script))
+func SpeechSave(script string, path string) {
+	file, err := os.Create(path)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer file.Close()
+	file.Write(Speech(script))
 }
 func preHandle(w Response, r Request) {
 	timezone := r.FormValue("tz")
@@ -83,14 +83,19 @@ func main() {
 		}
 	})
 	Handle("/download", func(w Response, r Request) {
-		preHandle(w, r)
-		for i:=0;i<24;i++{
-		    SpeechSave(fmt.Sprintf("%d時",i),fmt.Sprintf("%02d.ogg",i))
+		//MicroSDに音声の断片を保存し、ESP32でつなぎ合わせて出力する
+		for i := 0; i < 24; i++ {
+			SpeechSave(fmt.Sprintf("%d時", i), fmt.Sprintf("../microsd/hour_%02d.mp3", i))
 		}
-    })
+		for i := 0; i < 60; i++ {
+			SpeechSave(fmt.Sprintf("%d分", i), fmt.Sprintf("../microsd/minute_%02d.mp3", i))
+		}
+		SpeechSave("夜更かししているように見えます。寝ましょう", "../microsd/advice_sleep.mp3")
+		SpeechSave("寝坊しているように見えます。起きましょう", "../microsd/advice_wakeup.mp3")
+	})
 	Handle("/", func(w Response, r Request) {
 		preHandle(w, r)
-		WriteTemplate(w,nil,nil,"home.html")
+		WriteTemplate(w, nil, nil, "home.html")
 	})
 	//GCSに設置した
 	Credentialize("cloudmama.user.json")

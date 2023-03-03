@@ -46,6 +46,7 @@ func Credentialize(credential_json_path string) {
 		var fc map[string]string
 		if e = json.Unmarshal(bytes, &fc); e == nil {
 			for k, v := range fc {
+				fmt.Println("*", k, v)
 				os.Setenv(strings.ToUpper(k), v)
 			}
 			os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", credential_json_path)
@@ -69,7 +70,7 @@ func Listen() {
 	}
 }
 
-func WriteTemplate(w io.Writer, value interface{}, funcMap map[string]interface{}, filename ...string, ) {
+func WriteTemplate(w io.Writer, value interface{}, funcMap map[string]interface{}, filename ...string) {
 	if t, e := template.New(filename[0]).Funcs(funcMap).ParseFiles(filename...); e == nil {
 		e = t.Execute(w, value)
 	} else {

@@ -1,9 +1,9 @@
 package main
 
 import (
+	texttospeech "cloud.google.com/go/texttospeech/apiv1"
+	"cloud.google.com/go/texttospeech/apiv1/texttospeechpb"
 	"context"
-	"cloud.google.com/go/texttospeech/apiv1"
-	texttospeechpb "google.golang.org/genproto/googleapis/cloud/texttospeech/v1"
 	"log"
 )
 
@@ -26,12 +26,12 @@ func Speech(text string) []byte {
 		// Build the voice request, select the language code ("en-US") and the SSML
 		// voice gender ("neutral").
 		Voice: &texttospeechpb.VoiceSelectionParams{
-			LanguageCode: "ja-JP-Standard-A",
+			LanguageCode: "ja-JP",
 			SsmlGender:   texttospeechpb.SsmlVoiceGender_FEMALE,
 		},
 		// Select the type of audio file you want returned.
 		AudioConfig: &texttospeechpb.AudioConfig{
-			AudioEncoding: texttospeechpb.AudioEncoding_OGG_OPUS,
+			AudioEncoding: texttospeechpb.AudioEncoding_MP3,
 		},
 	}
 
