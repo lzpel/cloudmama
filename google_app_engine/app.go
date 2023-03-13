@@ -90,8 +90,9 @@ func main() {
 		for i := 0; i < 60; i++ {
 			SpeechSave(fmt.Sprintf("%d分", i), fmt.Sprintf("../microsd/minute_%02d.mp3", i))
 		}
-		SpeechSave("夜更かししているように見えます。寝ましょう", "../microsd/advice_sleep.mp3")
-		SpeechSave("寝坊しているように見えます。起きましょう", "../microsd/advice_wakeup.mp3")
+		SpeechSave("夜更かしを検知しました。寝ましょう", "../microsd/advice_sleep.mp3")
+		SpeechSave("寝坊を検知しました。起きましょう", "../microsd/advice_wakeup.mp3")
+		SpeechSave("1時50分、夜更かしを検知しました、寝ましょう", "../microsd/advice_demo.mp3")
 	})
 	Handle("/", func(w Response, r Request) {
 		preHandle(w, r)
