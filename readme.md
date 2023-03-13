@@ -8,12 +8,9 @@ Maker Faire Tokyo 2023 (10/14-15 @ビッグサイト) に出展予定。
 
 ## 紹介動画と紹介記事
 
+[<img src="https://user-images.githubusercontent.com/18492524/224830742-85b2bfa9-f57b-4fff-8b3a-713f0e16c1c2.png"/>動画: Maker Faire Tokyo 2023 出展作品紹介 規則正しい生活を支援するAIカメラ cloudmama](https://vimeo.com/803534490)
+
 [記事: ステイホームで乱れた生活習慣を機械学習を使って改善する話 #kuac2020](https://qiita.com/lzpel/items/e25633684128cebec6b8)
-
-[動画: Maker Faire Tokyo 2023 出展作品紹介 規則正しい生活を支援するAIカメラ cloudmama](https://vimeo.com/803534490)
-
-<iframe src="https://player.vimeo.com/video/803534490?h=1a34f061ab" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-<p><a href="https://vimeo.com/803534490">Maker Faire Tokyo 2023 出展作品紹介 規則正しい生活を支援するAIカメラ cloudmama</a> from <a href="https://vimeo.com/user195615177">三角聡</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
 
 ## 作り方
 
