@@ -1,2 +1,6 @@
+/.vscode
+/.embuild
+/target
+/Cargo.lock
 out/
 out.*

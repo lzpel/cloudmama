@@ -1,0 +1,9 @@
+$ cargo generate esp-rs/esp-idf-template
+⚠️   Favorite `esp-rs/esp-idf-template` not found in config, using it as a git repository: https://github.com/esp-rs/esp-idf-template.git
+✔ 🤷   Which template should be expanded? · cargo
+🤷   Project Name: newfw
+🔧   Destination: C:\cloudmama\newfw\newfw ...
+🔧   project-name: newfw ...
+🔧   Generating template ...
+✔ 🤷   Which MCU to target? · esp32
+✔ 🤷   Configure advanced template options? · false
