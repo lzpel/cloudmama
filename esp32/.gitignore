@@ -1,0 +1,3 @@
+/build
+/components/arduino*
+/components/esp32-camera
