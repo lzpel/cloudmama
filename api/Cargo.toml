@@ -1,0 +1,22 @@
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+frontend = ["rust-embed"]
+
+[dependencies]
+serde= {version="*", features = ["derive"]}
+serde_json= "*"
+axum = { version = "*", features = ["multipart"]}
+tokio = { version = "*", features = ["rt", "rt-multi-thread", "macros", "signal"] }
+rust-embed = { version = "^8", optional=true }
+mime_guess = "*"
+firestore = { version="*" }
+rustls = { version = "*", default-features = false, features = ["ring"] }
+uuid = { version = "*", features = ["serde", "v7"] }
+reqwest = { version = "*", default-features = false, features = ["json", "rustls-tls"] }
+jsonwebtoken = "*"
+ngoni = "^0.1.6"
+dotenvy = "*"

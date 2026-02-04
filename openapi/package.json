@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@typespec/compiler": "^1.7.1",
+    "@typespec/http": "^1.7.0",
+    "@typespec/openapi3": "^1.7.0"
+  },
+  "scripts": {
+    "tsp": "tsp"
+  }
+}

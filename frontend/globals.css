@@ -1,0 +1,186 @@
+@import "tailwindcss";
+@config "./tailwind.config.js";
+
+/*
+  YouTube風（ダーク基調）に寄せた palette 変数定義。
+  - 変数はすべて "R G B" 形式（例: 255 255 255）
+  - tailwind.config.js で rgb(var(--...)/<alpha-value>) として参照される前提
+  - darkMode は class 運用（.dark を付与）
+*/
+
+@layer base {
+	:root {
+		/* mode */
+		/* アプリ側で必要なら data 属性などで保持しても良いが、ここでは CSS 的に .dark で切替 */
+
+		/* ===== background =====
+       YouTube(light) は白基調だが、ここでは「YouTube風」= ダークを標準にしない。
+       まずは light を定義し、.dark で YouTube ダークに寄せる。
+    */
+		--palette-background-default: 255 255 255;
+		/* page */
+		--palette-background-paper: 255 255 255;
+		/* surfaces */
+
+		/* ===== text ===== */
+		--palette-text-primary: 15 15 15;
+		/* #0f0f0f */
+		--palette-text-secondary: 96 96 96;
+		/* #606060 */
+		--palette-text-disabled: 160 160 160;
+		/* #a0a0a0 */
+
+		/* ===== divider (borders) ===== */
+		--palette-divider: 229 229 229;
+		/* #e5e5e5 */
+
+		/* ===== action =====
+       hover/selected/focus は「オーバーレイ色」として運用し、Tailwind 側で /<alpha> を付与する想定。
+       light では黒オーバーレイが自然。
+    */
+		--palette-action-hover: 0 0 0;
+		--palette-action-selected: 0 0 0;
+		--palette-action-focus: 0 0 0;
+		--palette-action-disabled: 160 160 160;
+		--palette-action-disabledBackground: 245 245 245;
+
+		/* ===== tones =====
+       YouTube の "ブランド" は赤。primary を赤、secondary をニュートラル寄りに。
+       light/dark は任意だが、あると便利なので定義。
+    */
+		--palette-primary-main: 255 0 0;
+		/* YouTube Red */
+		--palette-primary-contrastText: 255 255 255;
+		--palette-primary-light: 255 77 77;
+		--palette-primary-dark: 204 0 0;
+
+		--palette-secondary-main: 245 245 245;
+		/* controls bg (light) */
+		--palette-secondary-contrastText: 15 15 15;
+		--palette-secondary-light: 250 250 250;
+		--palette-secondary-dark: 229 229 229;
+
+		--palette-error-main: 211 47 47;
+		--palette-error-contrastText: 255 255 255;
+		--palette-error-light: 239 83 80;
+		--palette-error-dark: 198 40 40;
+
+		--palette-warning-main: 245 124 0;
+		--palette-warning-contrastText: 255 255 255;
+		--palette-warning-light: 255 152 0;
+		--palette-warning-dark: 230 81 0;
+
+		--palette-info-main: 2 136 209;
+		--palette-info-contrastText: 255 255 255;
+		--palette-info-light: 3 169 244;
+		--palette-info-dark: 2 119 189;
+
+		--palette-success-main: 46 125 50;
+		--palette-success-contrastText: 255 255 255;
+		--palette-success-light: 76 175 80;
+		--palette-success-dark: 27 94 32;
+	}
+
+	/* YouTube Dark 風 */
+	.dark {
+		/* ===== background ===== */
+		--palette-background-default: 15 15 15;
+		/* #0f0f0f (app bg) */
+		--palette-background-paper: 24 24 24;
+		/* #181818 (surface/cards) */
+
+		/* ===== text ===== */
+		--palette-text-primary: 241 241 241;
+		/* #f1f1f1 */
+		--palette-text-secondary: 170 170 170;
+		/* #aaaaaa */
+		--palette-text-disabled: 120 120 120;
+		/* #787878 */
+
+		/* ===== divider ===== */
+		--palette-divider: 48 48 48;
+		/* #303030 */
+
+		/* ===== action =====
+       dark では白オーバーレイが自然（/alpha で調整）
+    */
+		--palette-action-hover: 255 255 255;
+		--palette-action-selected: 255 255 255;
+		--palette-action-focus: 255 255 255;
+		--palette-action-disabled: 120 120 120;
+		--palette-action-disabledBackground: 39 39 39;
+		/* #272727 */
+
+		/* ===== tones ===== */
+		--palette-primary-main: 255 0 0;
+		/* YouTube Red */
+		--palette-primary-contrastText: 255 255 255;
+		--palette-primary-light: 255 77 77;
+		--palette-primary-dark: 204 0 0;
+
+		/* secondary はダーク UI のボタン/ピル背景として使いやすいニュートラル */
+		--palette-secondary-main: 39 39 39;
+		/* #272727 */
+		--palette-secondary-contrastText: 241 241 241;
+		--palette-secondary-light: 56 56 56;
+		/* #383838 */
+		--palette-secondary-dark: 32 32 32;
+		/* #202020 */
+
+		/* status colors は light と同じでも良いが、暗背景で沈む場合があるので少し明るめに */
+		--palette-error-main: 244 67 54;
+		--palette-error-contrastText: 255 255 255;
+		--palette-error-light: 239 83 80;
+		--palette-error-dark: 211 47 47;
+
+		--palette-warning-main: 255 152 0;
+		--palette-warning-contrastText: 0 0 0;
+		--palette-warning-light: 255 183 77;
+		--palette-warning-dark: 245 124 0;
+
+		--palette-info-main: 41 182 246;
+		--palette-info-contrastText: 0 0 0;
+		--palette-info-light: 129 212 250;
+		--palette-info-dark: 2 136 209;
+
+		--palette-success-main: 102 187 106;
+		--palette-success-contrastText: 0 0 0;
+		--palette-success-light: 165 214 167;
+		--palette-success-dark: 46 125 50;
+	}
+
+	/* 基本のベーススタイル（任意だが YouTube っぽさの土台になる） */
+	html,
+	body {
+		height: 100%;
+	}
+
+	body {
+		background-color: rgb(var(--palette-background-default));
+		color: rgb(var(--palette-text-primary));
+		text-rendering: geometricPrecision;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* YouTube 風: フォーカスリングは控えめに */
+	:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px rgb(var(--palette-action-focus) / 0.25);
+		border-radius: 0.5rem;
+	}
+}
+
+/*
+  使い方例（クラス側）:
+  - 背景: bg-background-default / bg-background-paper
+  - 文字: text-text-primary / text-text-secondary
+  - 罫線: border-divider
+  - ホバー: hover:bg-action-hover/10 （darkでもlightでも自然）
+  - 主要ボタン: bg-primary-main text-primary-contrast hover:bg-primary-dark
+*/
+
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
