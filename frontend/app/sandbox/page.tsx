@@ -6,9 +6,12 @@ import * as Message from "@/stateless_ui/Message";
 // import * as Thumbnail from "@/stateless_ui/Thumbnail";
 import * as Premium from "@/stateless_ui/Subscription";
 import * as SlideSwitch from "@/stateless_ui/SlideSwitch";
-import * as Sushi3D from "@/stateless_ui/Sushi3D";
+// import * as Sushi3D from "@/stateless_ui/Sushi3D";
 import * as ImageUploadUI from "@/stateless_ui/ImageUploadUI";
 import * as PlanSelectionUI from "@/stateless_ui/PlanSelectionUI";
+import * as Sleep from "@/app/(app)/sleep/page";
+import * as Phone from "@/app/(app)/phone/page";
+import * as Away from "@/app/(app)/away/page";
 /**
  * サンドボックスページ
  */
@@ -17,7 +20,7 @@ export default function page() {
 	return <>
 		<div className="p-4 space-y-4">
 			<hr />
-			<Sushi3D.Example />
+			{/* <Sushi3D.Example /> */}
 			<hr />
 			<SlideSwitch.Example />
 			<hr />
@@ -34,6 +37,12 @@ export default function page() {
 			<ImageUploadUI.Example />
 			<hr />
 			<PlanSelectionUI.Example />
+			<hr />
+			<Sleep.Example />
+			<hr />
+			<Phone.Example />
+			<hr />
+			<Away.Example />
 		</div>
 	</>
 }

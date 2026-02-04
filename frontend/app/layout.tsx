@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Sarod",
-	description: "AI agent for everyone",
+	title: "AI生活指導室",
+	description: "可処分時間を最大化する、AIカメラ搭載型クラウドサービス",
 };
 
 export const viewport: Viewport = {

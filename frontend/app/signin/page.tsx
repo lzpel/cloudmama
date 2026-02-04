@@ -1,5 +1,6 @@
 //- background.jpgを背景に、SignInUpコンポーネントを中央に配置
 //- グラスモーフィズムなデザインでプレミアム感を演出
+//- ログインにはauthApiGoogleを使用
 //ルール：
 //- UI部品はexport function/export default functionで構築、constに関数を入れるのは禁止
 //- ... function ... (props: ...){ props.要素 }のように引数を宣言する。... function ... ({...}:型)のように引数を宣言しない。
